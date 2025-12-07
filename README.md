@@ -115,7 +115,23 @@ Interpretação de métricas de comportamento
 Raciocínio analítico aplicado a CRM/Growth
 
 ---
+# 📌 Sobre os dados utilizados neste projeto
 
+- Todos os dados utilizados são **dados sintéticos**, gerados exclusivamente para fins educacionais e de portfólio.
+- Nenhuma informação real de clientes foi utilizada.
+- Os arquivos `usuarios.csv` e `compras_teste.csv` foram criados com simulações de:
+  - comportamento de compra,
+  - ticket médio,
+  - datas de compra,
+  - canais preferidos,
+  - status de atividade (ativo/inativo).
+- Os dados refletem cenários comuns em operações de CRM, e foram estruturados para permitir:
+  - prática de SQL,
+  - segmentação de usuários,
+  - análises de comportamento,
+  - criação de campanhas CRM,
+  - exercício de raciocínio analítico.
+---
 ## 📬 Autor
 
 Yuri Borges
