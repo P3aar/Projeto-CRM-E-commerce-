@@ -1,27 +1,56 @@
-# Projeto: CRM Multicanal — Campanha de Promoção & Reativação (E-commerce)
+# 📊 Projeto CRM E-commerce — SQL + Segmentação + Análise de Clientes
 
-**Resumo:**  
-Projeto prático focado em reativar usuários inativos de uma loja e-commerce usando uma régua multicanal (Email A/B -> Push -> WhatsApp). Projeto ideal para portfólio de Analista de CRM Júnior.
+Este projeto simula a atuação de um **Analista de CRM Júnior**, utilizando SQL e uma base de dados fictícia para:
 
-**Conteúdo do repositório:**
-- usuarios.csv — base sintética com 500 registros
-- queries.sql — queries utilizadas para segmentação
-- assets/ — textos das peças (email A, email B, push, whatsapp)
-- project_case.pdf — documento resumido do case (visão, jornada, resultados fictícios)
-- README.md — este arquivo
+- identificar usuários inativos
+- analisar comportamento de compra
+- descobrir clientes de alto valor (VIPs)
+- gerar insights acionáveis para campanhas de CRM
+- criar estratégias de reativação e retenção
 
-**Como replicar:**
-1. Abrir `usuarios.csv` em Google Sheets ou carregar em SQLite/BigQuery.
-2. Rodar as queries em `queries.sql` adaptando a função de datas do seu ambiente.
-3. Importar as peças em sua ferramenta de CRM (RD/Mautic/Customer.io/Salesforce).
-4. Criar a jornada: Email A/B (Dia 1) -> Push (Dia 3) -> WhatsApp (Dia 5).
-5. Monitorar KPIs: taxa de abertura, CTR, conversão e receita.
+Os dados incluem:
+- `usuarios.csv` → atributos básicos dos clientes
+- `compras_teste.csv` → histórico simplificado de compras
 
-**KPIs de exemplo (estimativas fictícias para o portfolio):**
-- Abertura email A: 30%  
-- Abertura email B: 44%  
-- Clique email B: 7.2%  
-- Conversão jornada: 11.8%  
-- Receita estimada: R$ 3.980
+---
 
-**Autor:** Yuri Borges — Projeto gerado em 2025
+# 🧠 Objetivos do Projeto
+- Criar segmentações (inativos, VIPs, ticket alto, churn)
+- Analisar compras por usuário
+- Identificar os **Top 3 clientes de maior valor**
+- Calcular participação na receita
+- Preparar ações de CRM baseadas nos insights
+- Criar material para portfólio e currículo
+
+---
+
+
+
+
+# 🛠 SQL PRINCIPAL — Top 3 Clientes que Mais Gastaram
+
+```sql
+select u.user_id, u.nome, 
+	count(c.id_compra) as total_compras,
+	sum(c.valor_compra) as total_gasto
+from usuarios u 
+join compras c
+on u.user_id = c.user_id
+group by u.user_id, u.nome
+order by total_gasto desc, total_compras desc
+limit 3;
+
+-- 
+SELECT u.user_id, u.nome,
+       SUM(c.valor_compra) AS total_gasto,
+       ROUND(100.0 * SUM(c.valor_compra) / t.total_geral, 2) AS pct_receita -- Calcula a participação percentual do total gasto desse cliente sobre a receita total.
+FROM usuarios u
+JOIN compras c
+  ON u.user_id = c.user_id
+CROSS JOIN (
+    SELECT SUM(valor_compra) AS total_geral
+    FROM compras
+) t
+GROUP BY u.user_id, u.nome, t.total_geral
+ORDER BY total_gasto DESC
+LIMIT 3;
